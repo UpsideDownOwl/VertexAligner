@@ -65,6 +65,7 @@ fn modifiertype=  																			--returns current modifier name in modifier
 
 fn editpoly_selected_verts=																	--return selected vert(s) index(es) as BitArray
 (
+	currentmodifier = modpanel.getcurrentobject()
 	selected_verts_numbers=#()
 	vertex_status=currentmodifier.getselection #vertex
 	j=1
