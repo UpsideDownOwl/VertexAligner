@@ -1,13 +1,101 @@
 align_mode=#(true,false,false)
- base_vertex 																				--base vert coordinates for align to one vert mode
- theshape1 																					--base vert 1 shape name
- theshape2 																					--base vert 2 shape name	
- theshape3 																					--target verts shape name
- spn1   																					-- base vert 1 spline number
- spn2  																						-- base vert 2 spline number
- spn3=#()  																					-- target verts spline number array
- tverts_type                                                         						--modifier name of target verts
- target_verts=#() 																			--target verts numbers
+base_vertex 																				--base vert coordinates for align to one vert mode																							
+theshape3 																					--target verts shape name
+spn1   																					-- base vert 1 spline number
+spn2  																						-- base vert 2 spline number
+spn3=#()  																					-- target verts spline number array
+tverts_type                                                         						--modifier name of target verts
+target_verts=#() 																			--target verts numbers
+ 
+ fn take_coordinate =
+(
+	theshape= $
+				
+	if modifiertype() ==editable_poly then
+	(
+		selected_verts_indexes=(polyop.getvertselection thaeshape) as array
+		if selected_verts_indexes.count==1 then(coordinate=polyop.getvert thaeshape selected_verts_indexes[1])
+		else if selected_verts_indexes.count > 1 then(messagebox"more than one vertex selected")
+		else if selected_verts_indexes.count == 0 then(messagebox"no vertex selected")
+	)
+	else if modifiertype() ==SplineShape or modifiertype() == line then
+	(													
+		nothing_selected=0
+		for i in 1 to  numsplines thaeshape do 
+		(
+			
+			selected_verts_indexes=getknotselection thaeshape i
+			if selected_verts_indexes.count == 1 then
+			(
+				spn1=i
+				coordinate=getKnotPoint thaeshape spn1 selected_verts_indexes[1]
+				
+			)
+			else if selected_verts_indexes.count > 1 then (messagebox "more than one vertex selected")
+			else (nothing_selected +=  1 )
+		)
+		
+		if nothing_selected == numsplines thaeshape then(messagebox"no vertex selected")	
+	)
+	else if modifiertype() ==edit_poly then
+	(
+	   selected_verts_indexes=editpoly_selected_verts()
+		if selected_verts_indexes.count ==1 then
+		(
+			
+			coordinate=$.modifiers[modifiertype()].getVertex selected_verts_indexes[1]
+
+		)				
+		else if selected_verts_indexes.count == 0 then (messagebox"no vertex selected")
+		else if selected_verts_indexes.count >= 2 then (messagebox"more than one vertex selected")	
+		
+	)
+return coordinate
+	
+)
+
+fn take_selected_array =				
+( 	
+            
+            theshape3= $
+            if modifiertype() ==editable_poly then
+            (
+                tverts_type= modifiertype()
+                selected_vert_indexes_array=(polyop.getvertselection theshape3) as array
+                if selected_vert_indexes_array.count!=0 then (target_verts = selected_vert_indexes_array ; vertex_aligner.tvc=target_verts.count)
+                else(messagebox"no vertex selected")
+                
+            )
+            else if modifiertype() ==SplineShape or modifiertype() == line then
+            (
+                tverts_type= modifiertype()
+                nothing_selected = 0
+                for i in 1 to  numsplines theshape3 do 
+                (
+                    selected_vert_indexes_array=getknotselection theshape3 i
+                    if selected_vert_indexes_array.count != 0 then
+                    (
+                        spn3[i]=selected_vert_indexes_array
+                    )
+                    else if selected_vert_indexes_array.count == 0 then(nothing_selected += 1)
+                )
+                if nothing_selected== numsplines theshape3 then (messagebox"no vertex selected")
+            )	
+            else if modifiertype() ==edit_poly then
+            (
+                tverts_type= modifiertype()
+                vertex_aligner.selected_vert_indexes_array=editpoly_selected_verts()
+                if vertex_aligner.selected_vert_indexes_array.count >= 1 then
+                (
+                    
+                    target_verts=vertex_aligner.selected_vert_indexes_array
+
+                )				
+                else if vertex_aligner.selected_vert_indexes_array.count == 0 then (messagebox"no vertex selected")
+                    
+            )
+
+)
  
  fn dest_coordinate bv1 bv2 tv  =  															--for calculating the abstract line between two base verts
 (	
@@ -104,100 +192,14 @@ rollout vertex_aligner "vertex aligner"
 		button set_bv1 "set"   enabled:true width:50 height:18  align:#right offset:[0,-20]
 		on set_bv1 pressed do                                                                  --set ref vert1
 		( 
-			theshape1= $
-			
-			if modifiertype() ==editable_poly then
-			(
-				knot_selected=(polyop.getvertselection theshape1) as array
-				if knot_selected.count==0 then(messagebox"no vertex selected")
-				else if knot_selected.count > 1 then(messagebox"more than one vertex selected")
-				else if knot_selected.count == 1 then(vertex_aligner.bv1=polyop.getvert theshape1 knot_selected[1])
-				
-			)
-			else if modifiertype() ==SplineShape or modifiertype() == line then
-			(													
-				nothing_selected=0
-				for i in 1 to  numsplines theshape1 do 
-				(
-					
-					knot_selected=getknotselection theshape1 i
-					if knot_selected.count == 1 then
-					(
-						spn1=i
-						vertex_aligner.bv1=getKnotPoint theshape1 spn1 knot_selected[1]
-						
-					)
-					else if knot_selected.count > 1 then (messagebox "more than one vertex selected")
-					else (nothing_selected +=  1 )
-				)
-				
-				if nothing_selected == numsplines theshape1 then(messagebox"no vertex selected")	
-			)
-			else if modifiertype() ==edit_poly then
-			(
-			   knot_selected=editpoly_selected_verts()
-                if vertex_aligner.knot_selected.count ==1 then
-                (
-                    
-                    vertex_aligner.bv1=$.modifiers[modifiertype()].getVertex vertex_aligner.knot_selected[1]
-  
-                )				
-                else if knot_selected.count == 0 then (messagebox"no vertex selected")
-                else if knot_selected.count >= 2 then (messagebox"more than one vertex selected")	
-				
-				
-				
-				
-			)
-			
+			vertex_aligner.bv1= take_coordinate ()
 		)
 		
 		label label2 "ref vert 2"	align:#left	 enabled:true	offset:[0,2]                   --set ref vert2
 		button set_bv2 "set" iconName:@"PolyTools\TransformTools\PB_CW"  enabled:true width:50 height:18 align:#right offset:[0,-22]
 		on set_bv2 pressed do
 		( 
-			theshape2= $
-			
-			if modifiertype() ==editable_poly then
-			(
-				knot_selected=(polyop.getvertselection theshape1) as array
-				if knot_selected.count==0 then(messagebox"no vertex selected")
-				else if knot_selected.count > 1 then(messagebox"more than one vertex selected")
-				else if knot_selected.count == 1 then(vertex_aligner.bv2=polyop.getvert theshape2 knot_selected[1])
-				
-			)
-			else if modifiertype() ==SplineShape or modifiertype() == line then
-			(													
-				nothing_selected=0
-				for i in 1 to  numsplines theshape2 do 
-				(
-					
-					knot_selected=getknotselection theshape2 i
-					if knot_selected.count == 1 then
-					(
-						spn2=i
-						vertex_aligner.bv2=getKnotPoint theshape2 spn2 knot_selected[1]
-						
-					)
-					else if knot_selected.count > 1 then (messagebox "more than one vertex selected")
-					else (nothing_selected +=  1 )
-				)
-				
-				if nothing_selected == numsplines theshape2 then(messagebox"no vertex selected")	
-			)
-			else if modifiertype() ==edit_poly then
-			(
-			    knot_selected=editpoly_selected_verts()
-                if knot_selected.count ==1 then
-                (
-                    
-                    bv2=$.modifiers[modifiertype()].getVertex knot_selected[1]
-  
-                )				
-                else if knot_selected.count == 0 then (messagebox"no vertex selected")
-                else if knot_selected.count >= 2 then (messagebox"more than one vertex selected")	
-				
-			)
+			vertex_aligner.bv2=take_coordinate ()
 			
 		)
 		
@@ -205,45 +207,8 @@ rollout vertex_aligner "vertex aligner"
 		button set_tvn "set" iconName:@"PolyTools\TransformTools\PB_CW"  enabled:true width:50 height:18 align:#right offset:[0,-22]
 		on set_tvn pressed do
         ( 	
-            
-            theshape3= $
-            if modifiertype() ==editable_poly then
-            (
-                tverts_type= modifiertype()
-                knot_selected=(polyop.getvertselection theshape3) as array
-                if knot_selected.count!=0 then (target_verts = knot_selected ; vertex_aligner.tvc=target_verts.count)
-                else(messagebox"no vertex selected")
-                
-            )
-            else if modifiertype() ==SplineShape or modifiertype() == line then
-            (
-                tverts_type= modifiertype()
-                nothing_selected = 0
-                for i in 1 to  numsplines theshape3 do 
-                (
-                    knot_selected=getknotselection theshape3 i
-                    if knot_selected.count != 0 then
-                    (
-                        spn3[i]=knot_selected
-                    )
-                    else if knot_selected.count == 0 then(nothing_selected += 1)
-                )
-                if nothing_selected== numsplines theshape3 then (messagebox"no vertex selected")
-            )	
-            else if modifiertype() ==edit_poly then
-            (
-                tverts_type= modifiertype()
-                vertex_aligner.knot_selected=editpoly_selected_verts()
-                if vertex_aligner.knot_selected.count >= 1 then
-                (
-                    
-                    target_verts=vertex_aligner.knot_selected
-
-                )				
-                else if vertex_aligner.knot_selected.count == 0 then (messagebox"no vertex selected")
-                    
-            )
-
+            take_selected_array ()
+           
         )				
 				
 	)
@@ -259,46 +224,7 @@ rollout vertex_aligner "vertex aligner"
 		button s_b_vertex "set"  width:50 height:18 enabled:false align: #right offset:[0,-20]
 		on s_b_vertex pressed do                                                            --set base vertex
 		( 
-			theshape1= $
-			if modifiertype() ==editable_poly then
-			(
-				knot_selected=(polyop.getvertselection theshape1) as array
-				if knot_selected.count == 1 then(base_vertex=polyop.getvert theshape1 knot_selected[1])
-				else if knot_selected.count==0 then(messagebox"no vertex selected")
-				else if knot_selected.count > 1 then(messagebox"more than one vertex selected")
-					
-			)
-			if modifiertype() ==SplineShape or modifiertype() == line then
-			(
-				nothing_selected=0
-				for i in 1 to  numsplines theshape1 do 
-				(
-					
-					knot_selected=getknotselection theshape1 i
-					if knot_selected.count == 1 then
-					(
-						spn1=i
-						base_vertex=getKnotPoint theshape1 spn1 knot_selected[1]
-						
-					)
-					else if knot_selected.count > 1 then (messagebox "more than one vertex selected")
-					else (nothing_selected +=  1 )
-				)
-				
-				if nothing_selected == numsplines theshape1 then(messagebox"no vertex selected")	
-			)
-			if modifiertype() == edit_poly then
-			(
-				knot_selected=editpoly_selected_verts()
-				if vertex_aligner.knot_selected.count ==1 then
-                (
-                    
-                    base_vertex=$.modifiers[modifiertype()].getVertex vertex_aligner.knot_selected[1]
-  
-                )				
-                else if knot_selected.count == 0 then (messagebox"no vertex selected")
-                else if knot_selected.count >= 2 then (messagebox"more than one vertex selected")
-			)
+			base_vertex = take_coordinate()
 		)	
 			
 		label label4 "target vert(s)" enabled:false align:#left offset:[0,-4] 
@@ -306,39 +232,8 @@ rollout vertex_aligner "vertex aligner"
 		on target_vertices_array_maker pressed do                                           --set target vert(s)
 		( 
 				
-			theshape3= $
-			if modifiertype() ==editable_poly then
-			(
-				knot_selected=(polyop.getvertselection theshape3) as array
-				if knot_selected.count==0 then(messagebox"no vertex selected")
-				else (target_verts = knot_selected ; vertex_aligner.tvc=target_verts.count)
-			)
-			if modifiertype() ==SplineShape or modifiertype() == line then 
-			(
-				nothing_selected=0
-				for i in 1 to  numsplines theshape3 do 
-				(
-					knot_selected=getknotselection theshape3 i
-					if knot_selected.count != 0 then
-					(
-						spn3[i]=knot_selected
-					)
-					else if knot_selected.count == 0 then(nothing_selected += 1)
-				)	
-				if nothing_selected == numsplines theshape3 then (messagebox"no vertex selected")
-			)
-			if modifiertype() == edit_poly then
-			(
-				tverts_type= modifiertype()
-			vertex_aligner.knot_selected=editpoly_selected_verts()
-			if vertex_aligner.knot_selected.count >= 1 then
-			(
+			take_selected_array ()
 				
-				target_verts=vertex_aligner.knot_selected
-
-			)				
-			else if vertex_aligner.knot_selected.count == 0 then (messagebox"no vertex selected")
-				)
 		)
 	)
 	
@@ -365,39 +260,7 @@ rollout vertex_aligner "vertex aligner"
 		label t_vertss "target vert(s)" enabled:false align: #left offset:[0,-21]
 		on t_verts pressed do                                                           --set target vert(s)
 			(
-				theshape3= $
-				if modifiertype() ==editable_poly then
-				(
-					knot_selected=(polyop.getvertselection theshape3) as array
-					if knot_selected.count==0 then(messagebox"no vertex selected")
-					else (target_verts = knot_selected ; vertex_aligner.tvc=target_verts.count)
-				)
-				if modifiertype() ==SplineShape or modifiertype() == line then 
-				(
-					nothing_selected=0
-					for i in 1 to  numsplines theshape3 do 
-					(
-						knot_selected=getknotselection theshape3 i
-						if knot_selected.count != 0 then
-						(
-							spn3[i]=knot_selected
-						)
-						else if knot_selected.count == 0 then(nothing_selected += 1)
-					)	
-					if nothing_selected == numsplines theshape3 then (messagebox"no vertex selected")
-				)
-				if modifiertype() == edit_poly then
-				(
-					tverts_type= modifiertype()
-					vertex_aligner.knot_selected=editpoly_selected_verts()
-						
-					if vertex_aligner.knot_selected.count >= 1 then
-					(
-						
-						target_verts=vertex_aligner.knot_selected
-					)				
-					else if vertex_aligner.knot_selected.count == 0 then (messagebox"no vertex selected")
-				)
+				take_selected_array ()
 			)
 		
 		
