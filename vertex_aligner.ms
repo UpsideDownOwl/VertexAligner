@@ -98,13 +98,19 @@ fn take_selected_array =
 )
  
  fn dest_coordinate bv1 bv2 tv  =  															--for calculating the abstract line between two base verts
-(	
+(	tc =[0,0,0]
 	da= (bv2 - bv1)            										 
 	c=dot da tv            											 
 	a=(da[1]*bv1[1])+(da[2]*bv1[2])+(da[3]*bv1[3])
 	b=(da[1]^2)+(da[2]^2)+(da[3]^2)
 	t=(c-a)/b
-	tc=[ (bv1[1]+da[1]*t) , (bv1[2]+da[2]*t) , (bv1[3]+da[3]*t) ]
+	if vertex_aligner.midpoint.checked == true then 
+	(
+		tc[1]=((bv1[1] + bv2[1]) / 2)
+		tc[2]=((bv1[2] + bv2[2]) / 2)
+		tc[3]=((bv1[3] + bv2[3]) / 2)
+	)
+	else ( tc=[ (bv1[1]+da[1]*t) , (bv1[2]+da[2]*t) , (bv1[3]+da[3]*t) ] )
 	return tc
 )
 
@@ -209,7 +215,9 @@ rollout vertex_aligner "vertex aligner"
         ( 	
             take_selected_array ()
            
-        )				
+        )
+		
+		checkbox midpoint "midpoint" tooltip: "only works with one target vertex selected" enabled: true offset:[0,0]
 				
 	)
    
@@ -227,7 +235,7 @@ rollout vertex_aligner "vertex aligner"
 			base_vertex = take_coordinate()
 		)	
 			
-		label label4 "target vert(s)" enabled:false align:#left offset:[0,-4] 
+		label targetverts "target vert(s)" enabled:false align:#left offset:[0,-4] 
 		button target_vertices_array_maker "set"  width:50 height:18 align:#right offset:[0,-18] enabled:false
 		on target_vertices_array_maker pressed do                                           --set target vert(s)
 		( 
@@ -270,7 +278,7 @@ rollout vertex_aligner "vertex aligner"
     --*******************************************************************************************************************
     --                                          UI groups and sections enable/disable
     --*******************************************************************************************************************		
-	radiobuttons aligner_mode     labels:#("align between two vertex","align to one vertex","align to coordinates")	align:#left offsets:#([-10,-273],[-10,-200],[-10,-150])
+	radiobuttons aligner_mode     labels:#("align between two vertex","align to one vertex","align to coordinates")	align:#left offsets:#([-10,-293],[-10,-200],[-10,-150])
 		
 	on aligner_mode changed state do 
 	(
