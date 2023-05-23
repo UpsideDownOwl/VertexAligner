@@ -659,7 +659,7 @@ rollout vertex_aligner "vertex aligner"
 		)	
 		
 		if (tverts_type == line or tverts_type == SplineShape) then (updateShape theshape3)
-		else if (tverts_type == edit_poly) then (update theshape3)
+		else if (tverts_type == edit_poly) then (theshape3.modifiers[#Edit_poly].RefreshScreen())
 	)	
 	
 	
