@@ -13,29 +13,29 @@ target_verts=#() 																			--target verts numbers
 				
 	if modifiertype() ==editable_poly then
 	(
-		selected_verts_indexes=(polyop.getvertselection thaeshape) as array
-		if selected_verts_indexes.count==1 then(coordinate=polyop.getvert thaeshape selected_verts_indexes[1])
+		selected_verts_indexes=(polyop.getvertselection theshape) as array
+		if selected_verts_indexes.count==1 then(coordinate=polyop.getvert theshape selected_verts_indexes[1])
 		else if selected_verts_indexes.count > 1 then(messagebox"more than one vertex selected")
 		else if selected_verts_indexes.count == 0 then(messagebox"no vertex selected")
 	)
 	else if modifiertype() ==SplineShape or modifiertype() == line then
 	(													
 		nothing_selected=0
-		for i in 1 to  numsplines thaeshape do 
+		for i in 1 to  numsplines theshape do 
 		(
 			
-			selected_verts_indexes=getknotselection thaeshape i
+			selected_verts_indexes=getknotselection theshape i
 			if selected_verts_indexes.count == 1 then
 			(
 				spn1=i
-				coordinate=getKnotPoint thaeshape spn1 selected_verts_indexes[1]
+				coordinate=getKnotPoint theshape spn1 selected_verts_indexes[1]
 				
 			)
 			else if selected_verts_indexes.count > 1 then (messagebox "more than one vertex selected")
 			else (nothing_selected +=  1 )
 		)
 		
-		if nothing_selected == numsplines thaeshape then(messagebox"no vertex selected")	
+		if nothing_selected == numsplines theshape then(messagebox"no vertex selected")	
 	)
 	else if modifiertype() ==edit_poly then
 	(
