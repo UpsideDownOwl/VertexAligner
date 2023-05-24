@@ -292,7 +292,7 @@ rollout vertex_aligner "vertex aligner"
 			vertex_aligner.spinner_x.enabled=true
 			vertex_aligner.spinner_y.enabled=true
 			vertex_aligner.spinner_z.enabled=true
-			vertex_aligner.label4.enabled=false
+			vertex_aligner.t_vertss.enabled=false
 			vertex_aligner.set_bvert.enabled=false
 			vertex_aligner.align_type_x.enabled=true 
 			vertex_aligner.align_type_y.enabled=true 
@@ -314,7 +314,7 @@ rollout vertex_aligner "vertex aligner"
 			vertex_aligner.spinner_x.enabled=false
 			vertex_aligner.spinner_y.enabled=false
 			vertex_aligner.spinner_z.enabled=false
-			vertex_aligner.label4.enabled=false
+			vertex_aligner.t_vertss.enabled=false
 			vertex_aligner.set_bvert.enabled=false
 			vertex_aligner.align_type_x.enabled=false 
 			vertex_aligner.align_type_y.enabled=false 
@@ -340,7 +340,7 @@ rollout vertex_aligner "vertex aligner"
 			vertex_aligner.spinner_x.enabled=false
 			vertex_aligner.spinner_y.enabled=false
 			vertex_aligner.spinner_z.enabled=false
-			vertex_aligner.label4.enabled=true
+			vertex_aligner.t_vertss.enabled=true
 			vertex_aligner.set_bvert.enabled=true
 			vertex_aligner.align_type_x.enabled= true
 			vertex_aligner.align_type_y.enabled= true
