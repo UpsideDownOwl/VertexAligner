@@ -284,79 +284,94 @@ rollout vertex_aligner "vertex aligner"
 	(
 		if aligner_mode.state==3 then
 		(
-			vertex_aligner.t_vertss.enabled=true
-			vertex_aligner.t_verts.enabled=true
-			if vertex_aligner.align_type_x.checked==true then(vertex_aligner.x_coordinate.enabled=true)
-			if vertex_aligner.align_type_y.checked==true then(vertex_aligner.y_coordinate.enabled=true) 
-			if vertex_aligner.align_type_z.checked==true then(vertex_aligner.z_coordinate.enabled=true)
-			vertex_aligner.spinner_x.enabled=true
-			vertex_aligner.spinner_y.enabled=true
-			vertex_aligner.spinner_z.enabled=true
-			vertex_aligner.t_vertss.enabled=false
-			vertex_aligner.set_bvert.enabled=false
-			vertex_aligner.align_type_x.enabled=true 
-			vertex_aligner.align_type_y.enabled=true 
-			vertex_aligner.align_type_z.enabled=true 
-			system_unit.enabled=true
-			vertex_aligner.target_vertices_array_maker.enabled= false
-			s_b_vertex.enabled= false
-			label1.enabled=false
-			label2.enabled=false
-			label3.enabled=false
-			set_bv1.enabled=false
-			set_bv2.enabled=false
-			set_tvn.enabled=false
+			vertex_aligner.t_vertss.enabled=true	--...........group:"align to coordinates"  object: <label> "target vert(s)"
+			vertex_aligner.t_verts.enabled=true		--...........group:"align to coordinates"  object: <button> "set" for target verts
+			if vertex_aligner.align_type_x.checked==true then
+			(
+				x_coordinate.enabled=true 		--...............group:"align to coordinates"  object: <spinner> "x spinner"
+				spinner_x.enabled=true			--...............group:"align to coordinates"  object: <label> "target X"
+			)
+			if vertex_aligner.align_type_y.checked==true then
+			(
+				y_coordinate.enabled=true 	--...................group:"align to coordinates"  object: <spinner> "y spinner"
+				spinner_y.enabled=true		--...................group:"align to coordinates"  object: <label> "target Y"
+			)
+			if vertex_aligner.align_type_z.checked==true then
+			(
+				z_coordinate.enabled=true	--...................group:"align to coordinates"  object: <spinner> "z spinner"
+				spinner_z.enabled=true		--...................group:"align to coordinates"  object: <label> "target Z"
+			)
+			system_unit.enabled=true --..........................group:"align to coordinates"  object: <label> "system unit"
+			set_bvert.enabled=false	--...........................group:"align to one vertex"  object: <label> "base vertex"
+			vertex_aligner.align_type_x.enabled=true 	--.......group:"main roulout"  object: <button> "X"
+			vertex_aligner.align_type_y.enabled=true 	--.......group:"main roulout"  object: <button> "Y" 
+			vertex_aligner.align_type_z.enabled=true 	--.......group:"main roulout"  object: <button> "Z" 
+			target_vertices_array_maker.enabled= false	--.......group:"align to one vertex"  object: <button> "set" for "target vert(s)"
+			targetverts.enabled=false	--.......................group:"align to one vertex"  object: <label> "target vert(s)"
+			s_b_vertex.enabled= false	--.......................group:"align to one vertex"  object: <button> "set" for "base vertex"
+			label1.enabled=false	-- ..........................group:"align between two vertex"  object: <label> "ref vert 1" 
+			label2.enabled=false	--...........................group:"align between two vertex"  object: <label> "ref vert 2"
+			label3.enabled=false	--...........................group:"align between two vertex"  object: <label> "target vert(s)" 
+			set_bv1.enabled=false	--...........................group:"align between two vertex"  object: <button> "set" for "ref vert 1"
+			set_bv2.enabled=false	--...........................group:"align between two vertex"  object: <button> "set" for "ref vert 2"
+			set_tvn.enabled=false	--...........................group:"align between two vertex"  object: <button> "set" for "target vert(s)"
+			midpoint.enabled=false	--...........................group:"align between two vertex"  object: <button> "set" for "target vert(s)"
+
 		)
 		else if aligner_mode.state== 1 then
 		(
-			vertex_aligner.t_vertss.enabled=false
-			vertex_aligner.t_verts.enabled=false
-			vertex_aligner.spinner_x.enabled=false
-			vertex_aligner.spinner_y.enabled=false
-			vertex_aligner.spinner_z.enabled=false
-			vertex_aligner.t_vertss.enabled=false
-			vertex_aligner.set_bvert.enabled=false
-			vertex_aligner.align_type_x.enabled=false 
-			vertex_aligner.align_type_y.enabled=false 
-			vertex_aligner.align_type_z.enabled=false 
-			vertex_aligner.target_vertices_array_maker.enabled=false 
-			s_b_vertex.enabled= false
-			x_coordinate.enabled=false 
-			y_coordinate.enabled=false
-			z_coordinate.enabled=false
-			system_unit.enabled=false
-			label1.enabled=true
-			label2.enabled=true
-			label3.enabled=true
-			set_bv1.enabled=true
-			set_bv2.enabled=true
-			set_tvn.enabled=true
+			label1.enabled=true		-- ..........................group:"align between two vertex"  object: <label> "ref vert 1" 
+			label2.enabled=true		--...........................group:"align between two vertex"  object: <label> "ref vert 2"  	
+			label3.enabled=true		--...........................group:"align between two vertex"  object: <label> "target vert(s)" 
+			set_bv1.enabled=true	--...........................group:"align between two vertex"  object: <button> "set" for "ref vert 1"
+			set_bv2.enabled=true	--...........................group:"align between two vertex"  object: <button> "set" for "ref vert 2"
+			set_tvn.enabled=true	--...........................group:"align between two vertex"  object: <button> "set" for "target vert(s)"
+			midpoint.enabled=true	--...........................group:"align between two vertex"  object: <button> "set" for "target vert(s)"
+			t_verts.enabled=false	--...........................group:"align to coordinates"  object: <button> "set" for target verts
+			spinner_x.enabled=false	--...........................group:"align to coordinates"  object: <label> "target X"
+			spinner_y.enabled=false	--...........................group:"align to coordinates"  object: <label> "target Y"
+			spinner_z.enabled=false	--...........................group:"align to coordinates"  object: <label> "target Z"
+			t_vertss.enabled=false	--...........................group:"align to coordinates"  object: <label> "target vert(s)"
+			x_coordinate.enabled=false --........................group:"align to coordinates"  object: <spinner> "x" spinner"
+			y_coordinate.enabled=false --........................group:"align to coordinates"  object: <spinner> "y" spinner"
+			z_coordinate.enabled=false --........................group:"align to coordinates"  object: <spinner> "z" spinner"
+			system_unit.enabled=false --.........................group:"align to coordinates"  object: <label> "system unit"
+			set_bvert.enabled=false	--...........................group:"align to one vertex"  object: <label> "base vertex"
+			vertex_aligner.align_type_x.enabled=false	--.......group:"main roulout"  object: <button> "X"
+			vertex_aligner.align_type_y.enabled=false	--.......group:"main roulout"  object: <button> "Y" 
+			vertex_aligner.align_type_z.enabled=false 	--.......group:"main roulout"  object: <button> "Z"
+			target_vertices_array_maker.enabled=false	--.......group:"align to one vertex"  object: <button> "set" for "target vert(s)"
+			targetverts.enabled=false	--.......................group:"align to one vertex"  object: <label> "target vert(s)"
+			s_b_vertex.enabled= false	--.......................group:"align to one vertex"  object: <button> "set" for "base vertex"
+			
 			
 		)
 		else if aligner_mode.state==2 then
 		(
-			vertex_aligner.t_vertss.enabled=false
-			vertex_aligner.t_verts.enabled=false
-			vertex_aligner.spinner_x.enabled=false
-			vertex_aligner.spinner_y.enabled=false
-			vertex_aligner.spinner_z.enabled=false
-			vertex_aligner.t_vertss.enabled=true
-			vertex_aligner.set_bvert.enabled=true
-			vertex_aligner.align_type_x.enabled= true
-			vertex_aligner.align_type_y.enabled= true
-			vertex_aligner.align_type_z.enabled= true
-			vertex_aligner.target_vertices_array_maker.enabled= true
-			s_b_vertex.enabled= true
-			x_coordinate.enabled=false 
-			y_coordinate.enabled=false
-			z_coordinate.enabled=false
-			system_unit.enabled=false
-			label1.enabled=false
-			label2.enabled=false
-			label3.enabled=false
-			set_bv1.enabled=false
-			set_bv2.enabled=false
-			set_tvn.enabled=false
+			targetverts.enabled=true --..........................group:"align to one vertex"  object: <label> "target vert(s)"
+			set_bvert.enabled=true --............................group:"align to one vertex"  object: <label> "base vertex"
+			target_vertices_array_maker.enabled=true --..........group:"align to one vertex"  object: <button> "set" for "target vert(s)"
+			s_b_vertex.enabled= true --..........................group:"align to one vertex"  object: <button> "set" for "base vertex"
+			vertex_aligner.align_type_x.enabled=true --..........group:"main roulout"  object: <button> "X"
+			vertex_aligner.align_type_y.enabled=true --..........group:"main roulout"  object: <button> "Y"
+			vertex_aligner.align_type_z.enabled=true --..........group:"main roulout"  object: <button> "Z"
+			t_vertss.enabled=false	--...........................group:"align to coordinates"  object: <label> "target vert(s)"
+			t_verts.enabled=false	--...........................group:"align to coordinates"  object: <button> "set" for target verts
+			spinner_x.enabled=false --...........................group:"align to coordinates"  object: <label> "target X"
+			spinner_y.enabled=false	--...........................group:"align to coordinates"  object: <label> "target Y"
+			spinner_z.enabled=false	--...........................group:"align to coordinates"  object: <label> "target Z"
+			x_coordinate.enabled=false --........................group:"align to coordinates"  object: <spinner> "x" spinner"
+			y_coordinate.enabled=false--.........................group:"align to coordinates"  object: <spinner> "x" spinner"
+			z_coordinate.enabled=false--.........................group:"align to coordinates"  object: <spinner> "x" spinner"
+			system_unit.enabled=false --.........................group:"align to coordinates"  object: <label> "system unit"
+			label1.enabled=false -- .............................group:"align between two vertex"  object: <label> "ref vert 1" 
+			label2.enabled=false --..............................group:"align between two vertex"  object: <label> "ref vert 2"
+			label3.enabled=false --..............................group:"align between two vertex"  object: <label> "target vert(s)" 
+			set_bv1.enabled=false --.............................group:"align between two vertex"  object: <button> "set" for "ref vert 1"
+			set_bv2.enabled=false --.............................group:"align between two vertex"  object: <button> "set" for "ref vert 2"
+			set_tvn.enabled=false --.............................group:"align between two vertex"  object: <button> "set" for "target vert(s)"
+			midpoint.enabled=false --............................group:"align between two vertex"  object: <button> "set" for "target vert(s)"
+
 		)
 	)
 	
@@ -371,10 +386,19 @@ rollout vertex_aligner "vertex aligner"
 			then align_mode[1]=true
 			else align_mode[1]=false
 		if state== on and vertex_aligner.aligner_mode.state==3
-			then x_coordinate.enabled= true 
-			else x_coordinate.enabled= false
+			then
+			(		
+				x_coordinate.enabled= true 
+				spinner_x.enabled=true
+			)
+			else 
+			(	
+				x_coordinate.enabled= false
+				spinner_x.enabled=false
+				
+			)
 	)
-			
+
 	
     --*******************************************************************************************************************
     --                                         Y axis align  ENABLE/DISABLE
@@ -385,9 +409,18 @@ rollout vertex_aligner "vertex aligner"
 		if state == on 
 			then (align_mode[2]=true)
 			else (align_mode[2]=false)
-		if state== on and vertex_aligner.aligner_mode.state==3 
-			then (y_coordinate.enabled= true )
-			else (y_coordinate.enabled= false)
+		if state== on and vertex_aligner.aligner_mode.state==3
+			then
+			(
+				y_coordinate.enabled= true
+				spinner_y.enabled=true
+			)
+			else
+			(
+				y_coordinate.enabled= false
+				spinner_y.enabled=false
+				
+			)
 	)
 	
     --*******************************************************************************************************************
@@ -400,8 +433,16 @@ rollout vertex_aligner "vertex aligner"
 			then align_mode[3]=true
 			else align_mode[3]=false
 		if state== on and vertex_aligner.aligner_mode.state==3
-			then z_coordinate.enabled= true 
-			else z_coordinate.enabled= false
+			then 
+			(
+				z_coordinate.enabled= true 
+				spinner_z.enabled=true
+			)
+			else
+			(
+				z_coordinate.enabled= false
+				spinner_z.enabled=false
+			)
 	)
 	
 	
@@ -539,4 +580,4 @@ hyperlink donation "DONATION" address:"https://commerce.coinbase.com/checkout/9b
 	
 
 )
-createDialog vertex_aligner 155 370
+createDialog vertex_aligner 155 390
